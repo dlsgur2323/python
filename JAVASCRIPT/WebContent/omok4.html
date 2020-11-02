@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>omok</title>
+		<style>
+			table {
+				margin-top : 30px;
+				margin-left : auto;
+				margin-right : auto;
+				border-collapse: collapse;
+			}
+			td {
+				padding : 0px;
+			}
+			img {
+				display : block;
+			}
+			img[src="0.png"]{
+				cursor : pointer; 
+			}
+		</style>
+		<script>
+			var arr2D = [];
+			var turn = true;
+			function init(){
+				setArr2D();
+				showArr2D();
+				setAlt2D();
+				
+				
+				myrender();				
+			}
+			
+			function setAlt2D(){
+				var  arr = document.getElementsByTagName("img");
+				for(i=0;i<10;i++){
+					for(j=0;j<10;j++){
+						arr[(i*10+j)].alt= +i+","+j;						
+					}
+				}
+			}
+			
+// 			function myrender(){
+// 				var  arr = document.getElementsByTagName("tr");
+// 				for(i=0;i<10;i++){
+// 					for(j=0;j<10;j++){
+// 						var imgs = arr[i].getElementsByTagName("img")[j]
+// 						if(arr2D[i][j] == 1){
+// 							imgs.src="1.png"
+// 						} else if(arr2D[i][j] == 2){
+// 							imgs.src="2.png"			
+// 						} else if(arr2D[i][j] == 0){
+// 							imgs.src="0.png"
+// 						}
+// 					}
+// 				}
+// 			}
+			
+			function myrender(){
+				var  arr = document.getElementsByTagName("img");
+				for(i=0;i<10;i++){
+					for(j=0;j<10;j++){
+						if(arr2D[i][j] == 1){
+							arr[(i*10+j)].src="1.png"						
+						} else if(arr2D[i][j] == 2){
+							arr[(i*10+j)].src="2.png"						
+						} else if(arr2D[i][j] == 0){
+							arr[(i*10+j)].src="0.png"						
+	 					}
+					}
+				}
+				return true;
+			}
+			
+			
+			function showArr2D(){
+				console.log(arr2D)
+			}
+			
+			function setArr2D(){
+				for(i=0; i<10;i++){
+					var line = [];
+					line.push(0);line.push(0);line.push(0);line.push(0);line.push(0);line.push(0);line.push(0);line.push(0);line.push(0);line.push(0);
+					arr2D.push(line);
+				}
+			}
+			
+			function myclick(obj){
+				var idx = obj.alt.split(",");
+				var i = parseInt(idx[0]);
+				var j = parseInt(idx[1]);
+				if(arr2D[i][j]!=0){
+					return;
+				}
+				var color = 1;
+				if(turn){
+					arr2D[i][j] = 1;
+					color = 1;
+				} else {
+					arr2D[i][j] = 2;
+					color = 2;
+				}
+				if(myrender()){
+					var cntUp = getUp(i,j, color);
+					var cntDo = getDo(i,j, color);
+					var cntLe = getLe(i,j, color);
+					var cntRi = getRi(i,j, color);
+					var cntUl = getUl(i,j, color);
+					var cntUr = getUr(i,j, color);
+					var cntDr = getDr(i,j, color);
+					var cntDl = getDl(i,j, color);
+					
+					var cntUd = cntUp + cntDo;
+					var cntLr = cntLe + cntRi;
+					var cntUldr = cntUl + cntDr;
+					var cntUrdl = cntUr + cntDl;
+				
+				
+					if(cntUd == 4 || cntLr == 4 || cntUldr == 4|| cntUrdl == 4 ){
+						if(turn){
+							alert("백돌이 이겼습니다.")
+							return;
+						} else {
+							alert("흑돌이 이겼습니다.")
+							return;
+						}
+					}				
+				}
+				
+				turn = !turn;
+								
+			}
+			
+			function getUp(i,j, color){
+				var cnt = 0;
+				var a = i-1;
+				while(a>=0){
+					if(arr2D[a][j] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a--;
+				} 
+				
+				return cnt;
+			}
+			
+			
+			
+			function getDo(i,j, color){
+				var cnt = 0;
+				var a = i+1;
+				while(a<=9){
+					if(arr2D[a][j] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a++;
+				} 
+				
+				return cnt;
+			}
+			
+			function getLe(i,j, color){
+				var cnt = 0;
+				var a = j-1;
+				while(a >= 0){
+					if(arr2D[i][a] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a--;
+				}
+				return cnt;
+			}
+			
+			function getRi(i,j, color){
+				var cnt = 0;
+				var a = j+1;
+				while(a <= 9){
+					if(arr2D[i][a] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a++;
+				}
+				return cnt;
+			}
+			
+			function getUr(i,j, color){
+				var cnt = 0;
+				var a = i-1;
+				var b = j+1;
+				while(a >= 0 && b <= 9){
+					if(arr2D[a][b] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a--;
+					b++;
+				}
+				return cnt;
+			}
+			
+			function getUl(i,j, color){
+				var cnt = 0;
+				var a = i-1;
+				var b = j-1;
+				while(a >= 0 && b >= 0){
+					if(arr2D[a][b] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a--;
+					b--;
+				}
+				return cnt;
+			}
+			function getDl(i,j, color){
+				var cnt = 0;
+				var a = i+1;
+				var b = j-1;
+				while(a <= 9 && b >= 0){
+					if(arr2D[a][b] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a++;
+					b--;
+				}
+				return cnt;
+			}
+			function getDr(i,j, color){
+				var cnt = 0;
+				var a = i+1;
+				var b = j+1;
+				while(a <=9 && b <= 9){
+					if(arr2D[a][b] == color){
+						cnt++;
+					} else {
+						break;
+					}
+					a++;
+					b++;
+				}
+				return cnt;
+			}
+			
+			
+		</script>
+	</head>
+	<body onload="init()">
+		<table>
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+			<tr>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+				<td><img src="0.png" onclick="myclick(this)" /></td>
+			</tr>		
+		</table>
+	</body>
+</html>
