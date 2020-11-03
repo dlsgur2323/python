@@ -10,5 +10,4 @@ res = cursor.fetchall()
 for data in res:
     print(data)
 
-db.commit()
 db.close()
