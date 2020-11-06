@@ -3,94 +3,230 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>TETRIS</title>
+		<script>
+			var block2D = [
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]
+			]; 
+			var stack2D = [
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]
+			]; 
+			var print2D = [
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]
+			]; 
+			
+			var block = {
+					kind : 5,
+					status : 3,
+					i : 2,
+					j : 4
+			}
+			
+			function setBlock2DByBlock(){
+				if(block.kind==5){
+					if(block.status==0){
+						block2D[block.i		][block.j		] = block.kind;
+						block2D[block.i-1	][block.j		] = block.kind;
+						block2D[block.i		][block.j-1		] = block.kind;
+						block2D[block.i		][block.j+1		] = block.kind;
+					}
+					if(block.status==1){
+						block2D[block.i		][block.j		] = block.kind;
+						block2D[block.i-1	][block.j		] = block.kind;
+						block2D[block.i+1	][block.j		] = block.kind;
+						block2D[block.i		][block.j+1		] = block.kind;
+					}
+					if(block.status==2){
+						block2D[block.i		][block.j		] = block.kind;
+						block2D[block.i+1	][block.j		] = block.kind;
+						block2D[block.i		][block.j-1		] = block.kind;
+						block2D[block.i		][block.j+1		] = block.kind;
+					}
+					if(block.status==3){
+						block2D[block.i		][block.j		] = block.kind;
+						block2D[block.i-1	][block.j		] = block.kind;
+						block2D[block.i+1	][block.j		] = block.kind;
+						block2D[block.i		][block.j-1		] = block.kind;
+					}
+						
+				}
+			}
+			tab = document.getElementsByTagName("td");
+			function myrender(){
+				for(var i=0;i<print2D.length;i++){
+					for(var j=0;j<print2D[i].length;j++){
+
+						
+						if(print2D[i][j] == 0) tab[(i*10) + j].style.background = "#ffffff";
+						if(print2D[i][j] == 1) tab[(i*10) + j].style.background = "#ff0000";
+						if(print2D[i][j] == 2) tab[(i*10) + j].style.background = "#ef0000";
+						if(print2D[i][j] == 3) tab[(i*10) + j].style.background = "#df0000";
+						if(print2D[i][j] == 4) tab[(i*10) + j].style.background = "#cf0000";
+						if(print2D[i][j] == 5) tab[(i*10) + j].style.background = "#bf0000";
+						if(print2D[i][j] == 6) tab[(i*10) + j].style.background = "#af0000";
+						if(print2D[i][j] == 7) tab[(i*10) + j].style.background = "#9f0000";
+
+						if(print2D[i][j] == 11) tab[(i*10) + j].style.background = "#0000ff";
+						if(print2D[i][j] == 12) tab[(i*10) + j].style.background = "#0000ef";
+						if(print2D[i][j] == 13) tab[(i*10) + j].style.background = "#0000df";
+						if(print2D[i][j] == 14) tab[(i*10) + j].style.background = "#0000cf";
+						if(print2D[i][j] == 15) tab[(i*10) + j].style.background = "#0000bf";
+						if(print2D[i][j] == 16) tab[(i*10) + j].style.background = "#0000af";
+						if(print2D[i][j] == 17) tab[(i*10) + j].style.background = "#00009f";
+					}
+				}				
+			}
+			
+			function init(){
+				window.addEventListener('keydown', function(e){
+					mykeytype(e);
+				});
+				
+				stack2D[22][0]=11;
+				stack2D[22][1]=11;
+				stack2D[22][2]=11;
+				stack2D[22][3]=11;
+				stack2D[22][4]=11;
+				stack2D[22][5]=11;
+				
+			}
+			function mykeytype(e){
+				setBlock2DByBlock();
+				setPrint2DByBlockStack();
+				console.log(block2D)
+				console.log(stack2D)
+				console.log(print2D)
+				myrender()
+			}
+			function setPrint2DByBlockStack(){
+				for(var i=0;i<print2D.length;i++){
+					for(var j=0;j<print2D[i].length;j++){
+						if(block2D[i][j] != 0){
+							print2D[i][j] = block2D[i][j];
+						}
+						if(stack2D[i][j] != 0){
+							print2D[i][j] = stack2D[i][j];
+						}
+					}
+				}
+			}
+			
+	// 		좌 37 위 38 우 39 하 40
+		</script>
+		<style>
+			td {
+				width : 20px;
+				height : 10px;
+			}
+		</style>
 	</head>
-	<body>
-		<div style="position:absolute;width:50px;height:50px;background:yellow;top:0;left:0">가나다</div>	
+	<body onload="init()">
+		<table border="1">
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+				<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+			</tr>
+		</table>
 	</body>
-	<script>
-		dv = document.getElementsByTagName("div")[0];
-		topPressed = false;
-		leftPressed = false;
-		rightPressed = false;
-		bottomPressed = false;
-		
-		document.addEventListener('keyup', function(e){
-			var keyCode = e.keyCode;
-		    
-			if(keyCode==37){ // 왼쪽
-				leftPressed = false;
-		    } else if(keyCode==38){ // 위쪽
-		    	topPressed = false;
-		    } else if(keyCode==39){ // 오른쪽
-		    	rightPressed = false;
-		    } else if(keyCode==40){ // 아래쪽
-		    	bottomPressed = false;
-		    }
-		})
-		
-		document.addEventListener('keydown', function(e){
-	 		curr_left = parseInt(dv.style.left.replace("px",""));
-	 		curr_top = parseInt(dv.style.top.replace("px",""));
-		    var keyCode = e.keyCode;
-		    
-		    if(keyCode==37){ // 왼쪽
-				leftPressed = true;
-		    } else if(keyCode==38){ // 위쪽
-		    	topPressed = true;
-		    } else if(keyCode==39){ // 오른쪽
-		    	rightPressed = true;
-		    } else if(keyCode==40){ // 아래쪽
-		    	bottomPressed = true;
-		    	
-		    }
-		    
-		    if(topPressed && leftPressed){
-		    	if(curr_top > 4 && curr_left > 4){
-			    	up = curr_top - 5;
-			    	dv.style.top= up+"px";
-			    	lef = curr_left - 5;
-			    	dv.style.left= lef+"px";
-		    	}
-		    } else if(topPressed && rightPressed){
-		    	if(curr_top > 4){
-			    	up = curr_top - 5;
-			    	dv.style.top= up+"px";
-			    	lef = curr_left + 5;
-			    	dv.style.left= lef+"px";
-		    	}
-		    } else if(bottomPressed && rightPressed){
-		    	lef = curr_left + 5;
-		    	dv.style.left= lef+"px";
-		    	up = curr_top + 5;
-		    	dv.style.top= up+"px";
-		    } else if(bottomPressed && leftPressed){
-		    	if(curr_left > 4){
-			    	lef = curr_left - 5;
-			    	dv.style.left= lef+"px";
-			    	up = curr_top + 5;
-			    	dv.style.top= up+"px";
-		    	}
-			}else if(topPressed){
-		    	if(curr_top > 4){
-			    	up = curr_top - 5;
-			    	dv.style.top= up+"px";
-		    	}
-		    } else if(leftPressed){
-		    	if(curr_left > 4){
-			    	lef = curr_left - 5;
-			    	dv.style.left= lef+"px";
-		    	}
-		    } else if(rightPressed){
-		    	lef = curr_left + 5;
-		    	dv.style.left= lef+"px";
-		    } else if(bottomPressed){
-		    	up = curr_top + 5;
-		    	dv.style.top= up+"px";
-		    }
-		    
-		})
-// 		좌 37 위 38 우 39 하 40
-	</script>
 </html>
 
 

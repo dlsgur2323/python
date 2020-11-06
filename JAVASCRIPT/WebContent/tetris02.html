@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>TETRIS</title>
+	</head>
+	<body>
+		<div style="position:absolute;width:50px;height:50px;background:yellow;top:0;left:0">가나다</div>	
+	</body>
+	<script>
+		dv = document.getElementsByTagName("div")[0];
+		
+		document.addEventListener('keydown', function(e){
+	 		curr_left = parseInt(dv.style.left.replace("px",""));
+	 		curr_top = parseInt(dv.style.top.replace("px",""));
+		    var keyCode = e.keyCode;
+		    
+		    if(keyCode==37){ // 왼쪽
+		    	if(curr_left > 4){
+			    	lef = curr_left - 5;
+			    	dv.style.left= lef+"px";
+		    	}
+		    } else if(keyCode==38){ // 위쪽
+		    	if(curr_top > 4){
+			    	up = curr_top - 5;
+			    	dv.style.top= up+"px";
+		    	}
+		    } else if(keyCode==39){ // 오른쪽
+		    	lef = curr_left + 5;
+		    	dv.style.left= lef+"px";
+		    } else if(keyCode==40){ // 아래쪽
+		    	up = curr_top + 5;
+		    	dv.style.top= up+"px";
+		    }
+		    
+		})
+// 		좌 37 위 38 우 39 하 40
+	</script>
+</html>
+
+
+
+
+
+
+
+
+

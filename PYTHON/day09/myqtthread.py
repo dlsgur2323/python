@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QApplication
-from PyQt5 import uic
 import sys
 import time
 import threading
+from PyQt5 import uic
 
 from_class = uic.loadUiType("thread.ui")[0]
 
