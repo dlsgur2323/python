@@ -1,11 +1,15 @@
 import pygame
 import sys
 from numba.tests.test_flow_control import try_except_usecase
+from PyQt5.QtWidgets import QMessageBox
+from tkinter import *
+from tkinter import messagebox
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 
 white = (255, 255, 255)
+gray = (100,100,100)
 black = (0, 0, 0)
 
 b1 = (255, 0, 0)
@@ -25,12 +29,16 @@ s6 = (0, 0, 205)
 s7 = (0, 0, 195)
 
 
+Tk().wm_withdraw()
 pygame.init()
 pygame.display.set_caption("Simple PyGame Example")
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 pos_x = 200
 pos_y = 10
+mission_cnt = 2
+flag_ing = True
+
 
 block2D = [
                 [0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],
@@ -57,7 +65,7 @@ print2D = [
 
 class Block:
     def __init__(self) :
-        self.kind = 5
+        self.kind = 1
         self.status = 0
         self.i = 2
         self.j = 4
@@ -196,8 +204,12 @@ def show2D(arr) :
     print("=================================")
 
 def myrender() :
-    screen.fill(black)
-
+    screen.fill(gray)
+    
+    font = pygame.font.Font("cmss10.ttf",30)
+    text =font.render(str(mission_cnt),True,(28,0,0))
+    screen.blit(text,(10,10))
+    
     for i in range(len(block2D)) :
         for j in range(len(block2D[i])) :
             if print2D[i][j] == 0 : pygame.draw.rect(screen, white, (pos_x+(j*20), pos_y+(i*20), 19, 19))
@@ -243,15 +255,51 @@ def isCrash() :
                 return True;
     return False;
 
+def moveBlock2Stack() :
+    for i in range(len(block2D)) :
+        for j in range(len(block2D[i])) :
+            if(block2D[i][j] > 0) :
+                stack2D[i][j] = block2D[i][j] + 10;
+def remove10():
+    arrTemp = []
+    cnt10 = 0;
+    for i in range(len(stack2D)) :
+        if(stack2D[i][0] > 0 and
+            stack2D[i][1] > 0 and
+            stack2D[i][2] > 0 and
+            stack2D[i][3] > 0 and
+            stack2D[i][4] > 0 and
+            stack2D[i][5] > 0 and
+            stack2D[i][6] > 0 and
+            stack2D[i][7] > 0 and
+            stack2D[i][8] > 0 and
+            stack2D[i][9] > 0) :
+            cnt10 +=1
+        else :
+            arrTemp.append(stack2D[i])
+            
+    for i in range(cnt10) :
+        arrTemp.insert(0,[0,0,0,0,0,0,0,0,0,0]);
+    
+    for i in range(len(arrTemp)) :
+        stack2D[i] = arrTemp[i]
 
+    
+    return cnt10;
 
 clock = pygame.time.Clock()
 while True:
     clock.tick(10)
+    
+    if not flag_ing :
+        continue
+    
+    cntkey=0
     flag_render = False
+    
     flagOut = False
     flagCrash = False
-    
+    flagDown = False
     pre_i = block.i
     pre_j = block.j
     pre_status = block.status
@@ -264,23 +312,31 @@ while True:
     if key_event[pygame.K_LEFT]:
         block.j -= 1
         flag_render = True
+        cntkey+=1
         
     if key_event[pygame.K_RIGHT]:
         block.j += 1
         flag_render = True
+        cntkey+=1
 
     if key_event[pygame.K_UP]:
         changeStatus()
         flag_render = True
+        cntkey+=1
 
     if key_event[pygame.K_DOWN]:
         block.i += 1
         flag_render = True
+        flagDown = True
+        cntkey+=1
     
     if key_event[pygame.K_d]:   
         print(block)
         show2D(block2D)
         show2D(print2D)
+        cntkey+=1
+    
+    
     
     if flag_render :
         
@@ -299,7 +355,27 @@ while True:
             block.j = pre_j
             block.status = pre_status
             setBlock2DByBlock()
-            
+            if flagDown :
+                moveBlock2Stack();
+                block.i = 2;
+                block.j = 4;
+                block.status = 0;
+                setBlock2DByBlock();
+                
+                if(stack2D[5][0] >0 or stack2D[5][1] >0 or stack2D[5][2] >0 or
+                   stack2D[5][3] >0 or stack2D[5][4] >0 or stack2D[5][5] >0 or
+                   stack2D[5][6] >0 or stack2D[5][7] >0 or stack2D[5][8] >0 or
+                   stack2D[5][9] >0) :
+                    
+                    flag_ing = False;
+                    messagebox.showinfo('Tetris', 'you lose~~')
+
+                cnt10 = remove10();
+                if cnt10>0:
+                    mission_cnt -= cnt10
+                    if(mission_cnt <=0):
+                        messagebox.showinfo('Tetris', 'you win!!')
+                
         setPrint2DByBlockStack()
         myrender()
     
